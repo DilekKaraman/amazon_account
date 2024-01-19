@@ -19,7 +19,7 @@ Feature: US001
       | first and last name | email                | password  | repassword |
       | dilek karaman       | dilek322@hotmail.com | 123Dilek& | 123Dilek&  |
 
-  @negative @UI
+  @negg @UI
   Scenario Outline: is user try to create account on Amazon
     When  user goes to the Hello sign in block
     And   user clicks create your amazon account button
