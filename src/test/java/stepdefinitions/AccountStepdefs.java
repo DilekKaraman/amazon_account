@@ -1,26 +1,22 @@
 package stepdefinitions;
 
+import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Assert;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pages.AccountPage;
 import utilities.ConfigReader;
-import utilities.Driver;
 import utilities.ReusableMethods;
-
-import static hooks.Hooks.driver;
+import static stepdefinitions.Hooks.driver;
 
 public class AccountStepdefs {
 AccountPage accountPage=new AccountPage();
     @Given("user goes to homepage")
     public void user_goes_to_homepage() throws InterruptedException {
-        Driver.getDriver().get(ConfigReader.getProperty("google_url"));
-        driver.get("https://www.amazon.co.uk/");
+        //Driver.getDriver().get(ConfigReader.getProperty("amazon_url"));
+        driver.get(ConfigReader.getProperty("amazon_url"));
         Thread.sleep(3000);
     }
 
@@ -43,9 +39,12 @@ AccountPage accountPage=new AccountPage();
         ReusableMethods.waitFor(2);
     }
 
-    @And("user enters email {string}")
-    public void userEntersEmail(String email) {
-    accountPage.email.sendKeys(email);
+    @And("user enters email")
+    public void userEntersEmail() {
+        Faker faker=new Faker();
+        String email=faker.internet().emailAddress();
+        accountPage.email.sendKeys(email);
+
         ReusableMethods.waitFor(2);
     }
 
@@ -63,27 +62,33 @@ AccountPage accountPage=new AccountPage();
     @When("user clicks continue button")
     public void user_clicks_continue_button() {
         accountPage.cont.click();
-        ReusableMethods.waitFor(2);
+        ReusableMethods.waitFor(4);
 
     }
 
     @When("user click start puzzle button")
     public void user_click_start_puzzle_button() throws InterruptedException {
-    accountPage.startPuzzle.click();
-    Thread.sleep(5);
+   //accountPage.startPuzzle.click(); manuel
+    Thread.sleep(10000);
 
     }
 
     @Then("user verifies the {string} is visible")
     public void user_verifies_the_is_visible(String string) {
     Assert.assertTrue(accountPage.verifyEmailAddress.isDisplayed());
-    ReusableMethods.waitFor(2);
+    ReusableMethods.waitFor(5);
     }
 
+    @And("user enters email {string}")
+    public void userEntersEmail(String email) {
+        accountPage.email.sendKeys(email);
+        ReusableMethods.waitFor(1);
+    }
 
     @Then("user verifies the {string} is not visible")
     public void userVerifiesTheIsNotVisible(String arg0) {
-
+Assert.assertFalse(accountPage.verifyEmailAddress.isDisplayed());
+ReusableMethods.waitFor(2);
     }
 
 
